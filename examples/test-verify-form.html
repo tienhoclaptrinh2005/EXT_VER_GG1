@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Google One — Xác minh Sinh viên (Mô phỏng SheerID)</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8fafc;
+      margin: 0;
+      padding: 40px 20px;
+      color: #1e293b;
+    }
+    .wrapper {
+      max-width: 580px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 36px 32px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+    .brand-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .brand-logo span {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-logo .g-blue { color: #4285F4; }
+    .brand-logo .g-red { color: #EA4335; }
+    .brand-logo .g-yellow { color: #FBBC05; }
+    .brand-logo .g-green { color: #34A853; }
+    .brand-logo .one { color: #5f6368; font-weight: 400; margin-left: 4px; }
+
+    h1, h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      text-align: center;
+      color: #0f172a;
+    }
+    .subtitle {
+      font-size: 13.5px;
+      color: #64748b;
+      margin-bottom: 24px;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .form-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #334155;
+    }
+    input[type="text"], input[type="email"], input[type="date"], select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus {
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Autocomplete Dropdown */
+    .autocomplete-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      max-height: 180px;
+      overflow-y: auto;
+      margin-top: 4px;
+      display: none;
+    }
+    .autocomplete-item {
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 13.5px;
+      line-height: 1.35;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .autocomplete-item:hover {
+      background: #f0f7ff;
+      color: #1a73e8;
+    }
+    .autocomplete-item small {
+      display: block;
+      color: #64748b;
+      font-size: 11.5px;
+    }
+
+    /* Buttons */
+    .btn-action {
+      display: block;
+      width: 100%;
+      background: #1a73e8;
+      color: #ffffff;
+      border: none;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 999px;
+      cursor: pointer;
+      margin-top: 20px;
+      text-align: center;
+      transition: background 0.15s;
+    }
+    .btn-action:hover {
+      background: #1557b0;
+    }
+
+    /* Step 2 Upload Style */
+    .bullet-list {
+      margin: 16px 0 24px;
+      padding-left: 20px;
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .bullet-list li {
+      margin-bottom: 6px;
+    }
+    .btn-add-doc {
+      display: inline-block;
+      width: 100%;
+      background: #1a73e8;
+      color: #ffffff;
+      border: none;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 999px;
+      cursor: pointer;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .upload-box {
+      border: 2px dashed #94a3b8;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      background: #f8fafc;
+      margin: 16px 0;
+      display: none;
+    }
+    .upload-box.active {
+      display: block;
+    }
+    .upload-box p {
+      margin: 4px 0;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .uploaded-card {
+      margin-top: 14px;
+      padding: 12px;
+      background: #e6f4ea;
+      border: 1px solid #34a853;
+      border-radius: 8px;
+      display: none;
+      text-align: left;
+    }
+    .uploaded-card strong {
+      color: #137333;
+      font-size: 13.5px;
+      display: block;
+    }
+    .uploaded-card span {
+      font-size: 12px;
+      color: #3c4043;
+    }
+
+    /* Screen toggling */
+    .screen { display: none; }
+    .screen.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="brand-logo">
+      <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
+      <span class="one">One</span>
+    </div>
+
+    <!-- Màn 1: Form thông tin sinh viên -->
+    <div id="step1Screen" class="screen active">
+      <h2>Xác minh tư cách sinh viên</h2>
+      <p class="subtitle">Nhập thông tin theo đúng hồ sơ đăng ký của trường bạn.</p>
+
+      <form id="step1Form">
+        <div class="form-group">
+          <label for="schoolName">Trường học*</label>
+          <input type="text" id="schoolName" name="schoolName" placeholder="Nhập tên trường học..." autocomplete="off">
+          <div id="schoolDropdown" class="autocomplete-list" role="listbox">
+            <div class="autocomplete-item" role="option" data-value="Trường Đại học Xây dựng Hà Nội">
+              <strong>Trường Đại Học Xây Dựng Hà Nội</strong>
+              <small>Hà Nội</small>
+            </div>
+            <div class="autocomplete-item" role="option" data-value="Trường Đại học Bách khoa Hà Nội">
+              <strong>Trường Đại học Bách khoa Hà Nội</strong>
+              <small>Hà Nội</small>
+            </div>
+            <div class="autocomplete-item" role="option" data-value="Trường Đại học Quốc gia Hà Nội">
+              <strong>Đại học Quốc gia Hà Nội</strong>
+              <small>Hà Nội</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="firstName">Tên*</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Đức">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Họ*</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Nguyễn Vũ Minh">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Địa chỉ email sinh viên*</label>
+          <input type="email" id="email" name="email" placeholder="duc0174268@huce.edu.vn">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="birthDate">Ngày sinh*</label>
+            <input type="date" id="birthDate" name="birthDate">
+          </div>
+          <div class="form-group">
+            <label for="studentId">Mã số sinh viên (MSSV)*</label>
+            <input type="text" id="studentId" name="studentId" placeholder="0174268">
+          </div>
+        </div>
+
+        <button type="submit" id="btnStep1Submit" class="btn-action">Tiếp tục</button>
+      </form>
+    </div>
+
+    <!-- Màn 2: Màn upload tài liệu (SheerID style) -->
+    <div id="step2Screen" class="screen">
+      <h2>Tải bằng chứng theo học lên</h2>
+      <p class="subtitle" style="text-align: left; margin-bottom: 12px;">Tài liệu của bạn phải bao gồm:</p>
+      <ul class="bullet-list">
+        <li>Họ và tên đầy đủ của bạn như tên xuất hiện trên hồ sơ trường học của bạn</li>
+        <li>Tên đầy đủ hoặc viết tắt của cơ sở giáo dục hoặc logo</li>
+        <li>Bằng chứng về việc ghi danh hiện tại (Năm học hiện tại, hạn thẻ chưa qua)</li>
+      </ul>
+
+      <button type="button" id="btnAddDoc" class="btn-add-doc">Thêm tài liệu</button>
+
+      <div id="uploadZone" class="upload-box" data-dropzone="true">
+        <input type="file" id="fileDoc" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+        <p><strong>Bấm để chọn file</strong> hoặc kéo thả file vào đây</p>
+        <p style="font-size: 11.5px; color: #94a3b8;">Tệp phải là .jpg, .jpeg, .png, .pdf (tối đa 10MB)</p>
+      </div>
+
+      <div id="uploadedCard" class="uploaded-card">
+        <strong>✓ Đã tải tài liệu lên thành công</strong>
+        <span id="uploadedFilename">HUCE_the_sinh_vien.pdf</span>
+      </div>
+
+      <button type="button" id="btnStep2Submit" class="btn-action" style="display: none;">Tiếp tục</button>
+    </div>
+
+    <!-- Màn 3: Hoàn tất & Chờ xét duyệt -->
+    <div id="step3Screen" class="screen">
+      <h2>Hồ sơ đang chờ xét duyệt</h2>
+      <p class="subtitle">Cảm ơn bạn! Chúng tôi đã nhận được tài liệu xác thực và đang tiến hành kiểm tra.</p>
+      <div style="text-align: center; padding: 24px; color: #137333; font-size: 15px; font-weight: 700;">
+        ✓ Hoàn tất quy trình xác thực sinh viên!
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const schoolInput = document.getElementById("schoolName");
+    const schoolDropdown = document.getElementById("schoolDropdown");
+    const step1Screen = document.getElementById("step1Screen");
+    const step2Screen = document.getElementById("step2Screen");
+    const step3Screen = document.getElementById("step3Screen");
+    const btnAddDoc = document.getElementById("btnAddDoc");
+    const uploadZone = document.getElementById("uploadZone");
+    const fileDoc = document.getElementById("fileDoc");
+    const uploadedCard = document.getElementById("uploadedCard");
+    const uploadedFilename = document.getElementById("uploadedFilename");
+    const btnStep2Submit = document.getElementById("btnStep2Submit");
+
+    // Autocomplete dropdown logic
+    schoolInput.addEventListener("input", () => {
+      const val = schoolInput.value.trim().toLowerCase();
+      if (val.length > 1) {
+        schoolDropdown.style.display = "block";
+      } else {
+        schoolDropdown.style.display = "none";
+      }
+    });
+
+    document.querySelectorAll(".autocomplete-item").forEach(item => {
+      item.addEventListener("click", () => {
+        schoolInput.value = item.dataset.value;
+        schoolDropdown.style.display = "none";
+      });
+    });
+
+    // Step 1 Submit
+    document.getElementById("step1Form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      step1Screen.classList.remove("active");
+      step2Screen.classList.add("active");
+    });
+
+    // Step 2 Add Document
+    btnAddDoc.addEventListener("click", () => {
+      btnAddDoc.style.display = "none";
+      uploadZone.classList.add("active");
+    });
+
+    uploadZone.addEventListener("click", () => {
+      fileDoc.click();
+    });
+
+    fileDoc.addEventListener("change", () => {
+      const file = fileDoc.files && fileDoc.files[0];
+      if (file) {
+        uploadedFilename.textContent = `${file.name} (${Math.round(file.size / 1024)} KB) - Định dạng: ${file.type || 'tệp'}`;
+        uploadedCard.style.display = "block";
+        btnStep2Submit.style.display = "block";
+      }
+    });
+
+    // Step 2 Submit
+    btnStep2Submit.addEventListener("click", () => {
+      step2Screen.classList.remove("active");
+      step3Screen.classList.add("active");
+    });
+  </script>
+</body>
+</html>

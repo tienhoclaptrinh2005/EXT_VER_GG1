@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verify Extension</title>
+    <link rel="stylesheet" href="sidepanel.css">
+  </head>
+  <body>
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-main-row">
+        <div class="brand-group">
+          <div class="brand-chip" aria-hidden="true">
+            <span class="dice-dots">⚄</span>
+          </div>
+          <div class="brand-titles">
+            <div class="brand-name-wrap">
+              <h1>Verify Extension</h1>
+              <span class="version-badge">1.12.2</span>
+            </div>
+          </div>
+          <div class="header-live-status">
+            <span class="live-dot"></span>
+            <span id="pageStepLabel">Form thông tin</span>
+          </div>
+        </div>
+
+        <div class="window-controls" aria-label="Điều khiển cửa sổ">
+          <button id="minimizeOverlay" type="button" title="Thu nhỏ" aria-label="Thu nhỏ">−</button>
+          <button id="closeOverlay" type="button" title="Đóng" aria-label="Đóng">×</button>
+        </div>
+      </div>
+
+      <!-- URL & IP Bar -->
+      <div class="network-bar">
+        <div class="network-url">
+          <span class="url-dot"></span>
+          <span id="siteUrlLabel">services.sheerid.com / verify</span>
+        </div>
+        <div class="network-meta">
+          <span class="ip-badge" id="ipBadge">IPv4 42.113.199.242</span>
+          <button id="refreshStatusBtn" class="icon-btn" title="Làm mới trạng thái" type="button">↻</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav" aria-label="Chức năng">
+      <button class="nav-tab active" type="button" data-tab="automation">Tác vụ</button>
+      <button class="nav-tab" type="button" data-tab="profile">Tùy chọn</button>
+    </nav>
+
+    <main>
+      <!-- Panel 1: Tác vụ (Main Flow) -->
+      <section class="panel active" data-panel="automation">
+        <!-- Service Card -->
+        <div class="card service-card">
+          <div class="card-header-line">
+            <span class="card-eyebrow">DỊCH VỤ ĐANG MỞ</span>
+            <span class="pill-badge" id="serviceModeBadge">Tự động</span>
+          </div>
+          <h2 class="service-name" id="serviceName">Google One</h2>
+          <div class="service-meta" id="serviceMeta">URL: redirectUrl · primary</div>
+          <div class="service-notice" id="serviceNotice">
+            Sẽ sử dụng: Google One (tự động)
+          </div>
+        </div>
+
+        <!-- Status Card -->
+        <div class="card status-card">
+          <h3 class="card-title" id="pageStatusTitle">Form thông tin</h3>
+          <p class="status-desc" id="pageStatusDesc">Màn hình nhập thông tin sinh viên.</p>
+          <div class="status-footer-meta">
+            <span id="statusUpdateTime">Cập nhật 19:38:04</span>
+            <span>Refresh 2s: tự động — chờ xét duyệt</span>
+            <span id="cleanupStatus">Dọn file: chưa có</span>
+          </div>
+        </div>
+
+        <!-- Current Profile Card -->
+        <div class="card profile-card">
+          <div class="card-header-line">
+            <span class="card-eyebrow">HỒ SƠ ĐANG DÙNG</span>
+            <button class="icon-link-btn" id="copyProfileBtn" title="Sao chép hồ sơ" type="button">📋</button>
+          </div>
+          <div class="country-line">
+            <span class="label">QUỐC GIA</span>
+            <span class="value" id="profileCountry">Việt Nam (VN)</span>
+          </div>
+          <div class="profile-summary-box">
+            <div class="student-name-row">
+              <strong id="displayFullName">NGUYỄN VŨ MINH ĐỨC</strong>
+              <span class="id-badge" id="displayStudentId">0174268</span>
+            </div>
+            <div class="student-sub-row">
+              <span id="displayClass">68TH1</span> · <span id="displaySchool">Trường Đại học Xây dựng Hà Nội</span>
+            </div>
+            <div class="doc-badge-row">
+              <span class="doc-pill" id="displayDoc">📄 File: HUCE_0174268_NGUYEN_VU_MINH_DUC.pdf</span>
+            </div>
+            <div class="card-thumbnail-box" id="cardThumbnailBox" style="margin-top: 10px; display: flex; gap: 10px; align-items: center; padding: 8px; border-radius: 8px; background: rgba(0,0,0,0.25); border: 1px solid var(--card-border);">
+              <img id="cardThumbImg" src="" alt="Thẻ SV" style="width: 54px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid var(--card-border-glow); display: none;">
+              <div style="font-size: 11px; line-height: 1.4;">
+                <div style="font-weight: 750; color: var(--green-soft);" id="cardThumbStatus">📸 Đã gắn ảnh thẻ SV & PDF</div>
+                <div style="color: #94a3b8;" id="cardThumbDetails">Khớp 100% họ tên & MSSV trên</div>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px;">
+              <button class="btn btn-combo" id="downloadPngBtn" type="button" style="width: 100%; font-size: 11.5px; min-height: 34px; padding: 6px 8px; display: flex; align-items: center; justify-content: center; gap: 5px;" title="Tải ảnh PNG thẻ sinh viên về máy">
+                <span>🖼️</span> <span>Tải ảnh PNG</span>
+              </button>
+              <button class="btn btn-combo" id="downloadPdfBtn" type="button" style="width: 100%; font-size: 11.5px; min-height: 34px; padding: 6px 8px; display: flex; align-items: center; justify-content: center; gap: 5px;" title="Tải file PDF thẻ sinh viên về máy">
+                <span>📥</span> <span>Tải file PDF</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Status Banner -->
+        <div class="status-banner" id="flowStatusBanner">
+          <span class="banner-dot"></span>
+          <span id="flowStatusText">Sẵn sàng điền thông tin.</span>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="action-footer">
+          <button class="btn btn-combo" id="newAndFillBtn" type="button" title="Làm mới hồ sơ HUCE, tạo tài liệu và tự động điền + upload">
+            Hồ sơ mới & điền
+          </button>
+          <button class="btn btn-primary" id="fillCurrentBtn" type="button" title="Điền/Upload màn hình hiện tại">
+            Điền thông tin
+          </button>
+          <button class="btn btn-danger" id="stopBtn" type="button" title="Dừng quy trình tự động">
+            Dừng
+          </button>
+        </div>
+
+        <!-- Dedicated Image Re-upload Bar (when initial document is rejected) -->
+        <div class="reupload-bar">
+          <button class="btn btn-reupload" id="uploadImageOnlyBtn" type="button" title="Chỉ upload riêng hình ảnh thẻ sinh viên (.png) khi lần đầu tài liệu không đúng và bị yêu cầu gửi lại">
+            🖼️ Chỉ Upload Ảnh Lại (Khi bắt gửi lại tài liệu)
+          </button>
+        </div>
+      </section>
+
+      <!-- Panel 2: Tùy chọn (Settings, Profile Edit, Phôi HUCE) -->
+      <section class="panel" data-panel="profile">
+        <div class="section-heading">
+          <div>
+            <span class="card-eyebrow">CHỈNH SỬA HỒ SƠ</span>
+            <h2>Dữ liệu sinh viên</h2>
+          </div>
+          <span class="pill-badge">Lưu cục bộ</span>
+        </div>
+
+        <div class="actions" style="margin-bottom: 12px;">
+          <button class="btn btn-combo" id="openHuceCardGenerator" type="button" style="width: 100%;">
+            🪪 Mở Trình Tạo Phôi Thẻ HUCE (Canvas HD)
+          </button>
+        </div>
+
+        <form id="profileForm" autocomplete="off">
+          <label class="field full">
+            <span>Họ và tên đầy đủ</span>
+            <input name="fullName" placeholder="NGUYỄN VĂN AN">
+          </label>
+
+          <div class="grid two">
+            <label class="field">
+              <span>Họ / Last name</span>
+              <input name="lastName" autocomplete="off">
+            </label>
+            <label class="field">
+              <span>Tên / First name</span>
+              <input name="firstName" autocomplete="off">
+            </label>
+          </div>
+
+          <div class="grid two">
+            <label class="field">
+              <span>Ngày sinh</span>
+              <input name="birthDate" type="date">
+            </label>
+            <label class="field">
+              <span>Mã sinh viên (MSSV)</span>
+              <input name="studentId" placeholder="017xxxx">
+            </label>
+          </div>
+
+          <label class="field full">
+            <span>Trường đại học</span>
+            <input name="schoolName" value="Trường Đại học Xây dựng Hà Nội">
+          </label>
+
+          <label class="field full">
+            <span>Email trường</span>
+            <input name="email" type="email">
+          </label>
+
+          <div class="grid two">
+            <label class="field">
+              <span>Lớp</span>
+              <input name="className" id="fieldClass" placeholder="68TH1">
+            </label>
+            <label class="field">
+              <span>Khoa</span>
+              <input name="faculty" id="fieldFaculty" placeholder="Công nghệ Thông tin">
+            </label>
+          </div>
+
+          <label class="field full">
+            <span>Định dạng file tài liệu khi upload</span>
+            <select id="docFormatSelect">
+              <option value="png" selected>Ảnh PNG (.png) — Hiện trực tiếp ảnh thẻ trên SheerID</option>
+              <option value="pdf">File PDF (.pdf)</option>
+            </select>
+          </label>
+
+          <div class="actions" style="margin-top: 14px;">
+            <button class="btn btn-primary" type="submit">Lưu hồ sơ</button>
+            <button class="btn btn-outline" id="clearProfile" type="button">Xóa dữ liệu</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <div id="appToast" class="app-toast" role="status" aria-live="polite"></div>
+
+    <script src="../shared/core.js"></script>
+    <script src="../shared/huce-rules.js"></script>
+    <script src="sidepanel.js"></script>
+  </body>
+</html>

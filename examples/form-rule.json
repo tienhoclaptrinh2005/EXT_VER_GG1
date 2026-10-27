@@ -1,0 +1,22 @@
+{
+  "match": "https://example.edu/verify/*",
+  "fields": {
+    "input[name='firstName']": "firstName",
+    "input[name='lastName']": "lastName",
+    "input[name='email']": "email",
+    "input[name='studentId']": "studentId",
+    "input[name='school']": "schoolName"
+  },
+  "actions": [
+    {
+      "type": "click",
+      "selector": "button[data-action='next']",
+      "delayMs": 500
+    },
+    {
+      "type": "waitFor",
+      "selector": "form[data-step='review']",
+      "timeoutMs": 5000
+    }
+  ]
+}

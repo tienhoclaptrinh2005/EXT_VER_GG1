@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "AutoForm Local",
+  "description": "Điền biểu mẫu bằng dữ liệu thật do người dùng cung cấp, hoàn toàn cục bộ.",
+  "version": "0.2.0",
+  "minimum_chrome_version": "114",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_title": "Bật/tắt AutoForm Local trên trang"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "src/shared/core.js",
+        "src/content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/sidepanel/sidepanel.html",
+        "src/sidepanel/sidepanel.css",
+        "src/sidepanel/sidepanel.js",
+        "src/shared/core.js",
+        "src/shared/huce-rules.js",
+        "src/huce-card-generator.js",
+        "huce-card-generator.html",
+        "assets/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
